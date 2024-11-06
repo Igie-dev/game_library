@@ -96,8 +96,6 @@ export default function GameLibrary() {
   };
 
   const filterGames = useCallback(() => {
-    setIsLoading(true);
-
     let filtered = [...games];
 
     if (showFavorites) {
@@ -119,7 +117,6 @@ export default function GameLibrary() {
     }
 
     setFilteredGames(filtered);
-    setIsLoading(false);
   }, [
     games,
     deferredQuery,
@@ -188,14 +185,14 @@ export default function GameLibrary() {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+      <div className="relative grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {isLoading ? (
-          <div className="flex justify-center w-full h-full pt-20">
+          <div className="absolute top-0 left-0 flex justify-center w-full h-32 pt-10 ">
             <LoaderCircle size={30} className="animate-spin" />
           </div>
-        ) : !isLoading && filteredGames.length ? (
+        ) : !isLoading && filteredGames?.length ? (
           filteredGames.map((game) => <GameCard key={game.id} game={game} />)
-        ) : !isLoading && filteredGames.length < 1 ? (
+        ) : !isLoading && games.length < 1 && featuredGames.length < 1 ? (
           <p>No game found!</p>
         ) : null}
       </div>
